@@ -40,7 +40,7 @@
     }
 
     .operate>span {
-      /* width: 30px; */
+      width: 30px;
       height: 30px;
       background-size: 100%;
       background-repeat: none repeat;
@@ -88,9 +88,6 @@
     <span onclick="addPolygon()">面</span>
     <span onclick="addPolygonBeijing()">北京面</span>
     <span onclick="addNeighborhoods()">cesium面</span>
-    <span onclick="addEntityPolygon()">entity面</span>
-    <span onclick="addEntityPolyline()">entity线</span>
-    <span onclick="addEntityPolygonBeijing()">北京entity面</span>
     <span onclick="createMapvHotData()">热力</span>
     <span class="clear" onclick="clearAll()">X</span>
   </div>
@@ -104,8 +101,8 @@
     var fsBody = `
           // 可以修改的参数
           // 注意shader中写浮点数是，一定要带小数点，否则会报错，比如0需要写成0.0，1要写成1.0
-          // float _baseHeight = -50.0; // 北京
-          float _baseHeight = -20.0; // 武汉
+          float _baseHeight = -50.0; // 北京
+          // float _baseHeight = -20.0; // 武汉
           float _heightRange = 50.0; // 高亮的范围(_baseHeight ~ _baseHeight + _heightRange) 默认是 0-60米
           //float _baseHeight = -200.0; // 克拉玛依
           // float _baseHeight = -860.0; // 独山子
@@ -219,7 +216,7 @@
                   // "url": " http://klmy.wh.dev.delivery.haizhi.com/kelamayi/tiles/{z}/{x}/{y}.png",
                   // "url": " /kelamayi2/tiles/{z}/{x}/{y}.png",
                   "url": " /beijing/tiles/{z}/{x}/{y}.jpg",
-                  // "url": "/darkblue/tiles/{z}/{x}/{y}.jpg",
+                  // "url": "http://39.106.114.130/darkblue/tiles/{z}/{x}/{y}.jpg",
                   "srcCoordType": "WGS84",
                   "dstCoordType": "WGS84",
                   "maximumLevel": 17,
@@ -975,16 +972,16 @@
           }
       })
       console.log('beijing', beijing)
-      // console.log('polygonPositions', polygonPositions)
-      // const beijingline = JSON.parse(JSON.stringify(beijing))
-      // beijingline.forEach((feature, index) => {
-      //   feature.geometry.type = "LineString"
-      //   feature.geometry.coordinates = feature.geometry.coordinates[0]
-      // }) 
-      // console.log('beijingline', beijingline)
-      // localStorage.setItem('beijingline', JSON.stringify(beijingline))
+      console.log('polygonPositions', polygonPositions)
+      const beijingline = JSON.parse(JSON.stringify(beijing))
+      beijingline.forEach((feature, index) => {
+        feature.geometry.type = "LineString"
+        feature.geometry.coordinates = feature.geometry.coordinates[0]
+      }) 
+      console.log('beijingline', beijingline)
+      localStorage.setItem('beijingline', JSON.stringify(beijingline))
 
-      // localStorage.setItem('polygonPositions', JSON.stringify(polygonPositions))
+      localStorage.setItem('polygonPositions', JSON.stringify(polygonPositions))
     }
     // 北京wkt边界上图
     function createPolygonByWkt(features, name) {
@@ -1026,28 +1023,6 @@
       console.log(name, new Date().getTime())
       polygons.push(polygon)
     }
-    function addEntityPolygonBeijing() {
-      beijing.forEach((feature, index) => {
-        const geometry = feature.geometry
-        if (geometry.type === 'Polygon') {
-            const positions = []
-            geometry.coordinates[0].forEach((item, index) => {
-              positions.push(item[0])
-              positions.push(item[1])
-            })
-            addEntityPolygon(positions, feature.name);
-          } else { // "MultiPolygon"
-            geometry.coordinates.forEach((coordinate, subIndex) => {
-              const positions = []
-              coordinate[0].forEach((item, index) => {
-                positions.push(item[0])
-                positions.push(item[1])
-              })
-              addEntityPolygon(positions, feature.name);
-            })
-          }
-      })
-    }   
     // 北京position上图
     function addPolygonByPosition(features, name) {
       beijing.forEach((item, index) => {
@@ -1090,9 +1065,8 @@
         item.destroy()
       })
       polygons.splice(0,polygons.length)
-      console.log('viewer', viewer)
+      console.log('viewer.dataSources', viewer.dataSources)
       viewer.dataSources.removeAll()
-      viewer.entities.removeAll()
     }
     // 绘制poi测试
     function createODPoints(earth, item, imgUrl) {
@@ -1167,7 +1141,6 @@
       addCesiumPolygon()
       addCesiumPolyline()
     }
-
     // cesium 原始画面方法
     function addCesiumPolygon() {
       const viewer = earth.czm.viewer;
@@ -1264,53 +1237,6 @@
           }
         }
       })
-    }
-    // 手动添加 polygon 
-    function addEntityPolygon(positions) {
-      positions = positions || [
-              114.2306900024414,
-              30.636435033976316,
-              114.22931671142578,
-              30.586203812332297,
-              114.29077148437499,
-              30.616345672089043,
-              114.2306900024414,
-              30.636435033976316]
-      console.log('positions', positions)
-      const viewer = earth.czm.viewer;
-      var redPolygon = viewer.entities.add({
-        name: "Red polygon on surface",
-        polygon: {
-          hierarchy: Cesium.Cartesian3.fromDegreesArray(positions),
-          material: Cesium.Color.RED.withAlpha(0.5),
-          outline: true,
-          outlineWidth: 100,
-          outlineColor: Cesium.Color.BLACK,
-          extrudedHeight: 20,
-        },
-      });
-    }
-    // 手动添加 polyline
-    function addEntityPolyline() {
-      const viewer = earth.czm.viewer;
-      var redLine = viewer.entities.add({
-        name: "Red line on terrain",
-        polyline: {
-          positions: Cesium.Cartesian3.fromDegreesArray([
-              114.2306900024414,
-              30.636435033976316,
-              114.22931671142578,
-              30.586203812332297,
-              114.29077148437499,
-              30.616345672089043,
-              114.2306900024414,
-              30.636435033976316
-          ]),
-          width: 5,
-          material: Cesium.Color.RED,
-          clampToGround: true,
-        },
-      });
     }
   </script>
 </body>
