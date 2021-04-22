@@ -105,9 +105,11 @@
           // 可以修改的参数
           // 注意shader中写浮点数是，一定要带小数点，否则会报错，比如0需要写成0.0，1要写成1.0
           //float _baseHeight = -50.0; // 北京
-          //float _baseHeight = -20.0; // 武汉
-          float _baseHeight = 0.0; // 上海
-          float _heightRange = 200.0; // 高亮的范围(_baseHeight ~ _baseHeight + _heightRange) 默认是 0-60米
+           float _baseHeight = -20.0; // 武汉
+          float _heightRange = 50.0; // 高亮的范围(_baseHeight ~ _baseHeight + _heightRange) 默认是 0-60米
+          //float _baseHeight = -200.0; // 克拉玛依
+          // float _baseHeight = -860.0; // 独山子
+          //float _heightRange = 20.0; // 克拉玛依
           float _glowRange = 300.0; // 光环的移动范围(高度)
 
           // 建筑基础色
@@ -149,8 +151,7 @@
     var curfsBody = fsBody
     var shCenter = [121.5021463849818, 31.236440277115648, 200] // 上海
     // var whCenter = [113.954422, 30.920587, 200] // 孝感
-    // var whCenter = [114.29797053337097, 30.63787510375684, 200] // 武汉
-    var whCenter = [121.5021463849818, 31.236440277115648, 200] // 上海 
+    var whCenter = [114.29797053337097, 30.63787510375684, 200] // 武汉
     // var whCenter = [116.416357,39.928353, 200] // 北京
     // var whCenter = [114.465406, 38.066124, 200] // 石家庄 114.465406,38.066124
     // var whCenter = [119.452298,39.803812, 200] // 秦皇岛 119.586579,39.942531
@@ -216,9 +217,11 @@
               "rectangle": null,
               "xbsjImageryProvider": {
                 "XbsjImageryProvider": {
+                  // "url": " http://klmy.wh.dev.delivery.haizhi.com/kelamayi/tiles/{z}/{x}/{y}.png",
+                  // "url": " /kelamayi2/tiles/{z}/{x}/{y}.png",
                   // "url": "/beijing/tiles/{z}/{x}/{y}.jpg",
                   // "url": "/darkblue/tiles/{z}/{x}/{y}.jpg",
-                  "url": "https://api.mapbox.com/styles/v1/mapbox/navigation-night-v1/tiles/{z}/{x}/{y}?access_token=pk.eyJ1IjoibWFwYm94IiwiYSI6ImNpejY4NXVycTA2emYycXBndHRqcmZ3N3gifQ.rJcFIG214AriISLbB6B5aw",
+                  "url": "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
                   "srcCoordType": "WGS84",
                   "dstCoordType": "WGS84",
                   "maximumLevel": 17,
@@ -230,36 +233,23 @@
             "ref": "tileset",
             "czmObject": {
               "xbsjType": "Tileset",
-              "xbsjGuid": "094b1984-4aae-4ac3-bb35-86d84e6a820400",
-              "name": "白模测试2",
-              "url": "/output/sh-jz/tileset.json",
-              "xbsjUseOriginTransform": false,
-              "xbsjStyle": "var style = {\n    color: \"vec4(0, 0.5, 1.0,1)\"\n}",
-              "xbsjClippingPlanes": {},
-              "xbsjCustomShader": {
-                "fsBody": fsBody,
-              }
-            }
-          },
-          {
-            "ref": "tileset",
-            "czmObject": {
-              "xbsjType": "Tileset",
               "xbsjGuid": "094b1984-4aae-4ac3-bb35-86d84e6a8204",
-              "name": "陆家嘴",
-              "url": "/output/sh-fbx/tileset.json",
-              // "xbsjPosition": SHRadianToWHRadian([2.1201528021066163, 0.5451706303633767, 0]),
-              "xbsjPosition": [
-                2.120596806138149,
-                0.5452642837003802,
-                0
-              ],
-              "xbsjUseOriginTransform": false,
-              "xbsjStyle": "var style = {\n    color: \"vec4(0, 0.5, 1.0,1)\"\n}",
+              "name": "白模测试2",
+              // "url": "https://lab.earthsdk.com/model/702aa950d03c11e99f7ddd77cbe22fea/tileset.json",
+              // "url": "/output/hebei/tileset.json",
+              // "url": "/output/beijing-3dtiles/tileset.json",
+              // "url": "/output/newjianganwight6/tileset.json",
+              "url": "/output/wuhan/tileset.json",
+              // "url": "/output/xiaogan/tileset.json",
+              // "url": "http://digital-city.wh.dev.delivery.haizhi.com/output/newjianganwight/tileset.json",
+              // "url": "http://klmy.wh.dev.delivery.haizhi.com/output/klmy/tileset.json",
+              // "url": "/output/klmy/tileset.json",
+              // "url": "/output/new-klmy-img/tileset.json",
+              // "xbsjStyle": "var style = {\n    color: \"vec4(0, 0.5, 1.0,1)\"\n}",
               "xbsjClippingPlanes": {},
-              "xbsjCustomShader": {
-                "fsBody": fsBody,
-              }
+              // "xbsjCustomShader": {
+              //   "fsBody": fsBody,
+              // }
             }
           },
           /* 重点区域放射图 */
@@ -302,24 +292,24 @@
 
       // 环绕光环
       // createCylinder2(earth);
-      // 雷达扫描
-      createGroundCircle(earth);
-      // 旋转三角体
-      createTetrahedron(earth);
-      //  动态路网
-      createODLines(earth);
-      //  竖形动态光影
-      createODLines2(earth);
-      // 动态射线
-      createODLines3(earth);
-      // 标注
-      createLabel(earth);
-      // createLabel2(earth);
-      // // cesium原始撒点方法
-      // addGovermentPoint()
-      // // cesium原始画面方法
-      // addNeighborhoods()
-      watchCamera()
+      // // 雷达扫描
+      // createGroundCircle(earth);
+      // // 旋转三角体
+      // createTetrahedron(earth);
+      // //  动态路网
+      // createODLines(earth);
+      // //  竖形动态光影
+      // createODLines2(earth);
+      // // 动态射线
+      // createODLines3(earth);
+      // // 标注
+      // createLabel(earth);
+      // // createLabel2(earth);
+      // // // cesium原始撒点方法
+      // // addGovermentPoint()
+      // // // cesium原始画面方法
+      // // addNeighborhoods()
+      // watchCamera()
     }
     // 热力图
     function createMapvHotData() {
@@ -614,6 +604,8 @@
       odlines.color = [1, 1, 1, 1];
 
       var busLines = [];
+      var point = [76.025390625, 15.368949896534705, 200]
+      var pos = [...point].xeptr
       var p = [
         [[2.120597930315031, 0.5451624300822016, 400], [2.1202907282192385, 0.5450835546419367, 1.5],],
         [[2.120597930315031, 0.5451624300822016, 400], [2.120125294340532, 0.5453135338319917, 1.5],],
@@ -623,7 +615,8 @@
         [[2.120597930315031, 0.5451624300822016, 400], [2.120461948038486, 0.5451830324218808, 1.5],],
         [[2.120597930315031, 0.5451624300822016, 400], [2.1204975918398317, 0.5452978537884561, 1.5],],
         [[2.120597930315031, 0.5451624300822016, 400], [2.1207024221200843, 0.5453525660588958, 1.5],],
-        [[2.120597930315031, 0.5451624300822016, 400], [2.1207404597752664, 0.5451854942212021, 1.5],]
+        [[2.120597930315031, 0.5451624300822016, 400], [2.1207404597752664, 0.5451854942212021, 1.5],],
+        [pos, [2.120597930315031, 0.5451624300822016, 400],],
       ];
       p = p.map(e => e.map(ee => SHRadianToWHRadian(ee)))
       var positionsCollection = p.map(e => {
@@ -635,7 +628,7 @@
         // minDistance, 计算出的线段的最小间隔距离 值越小曲线越平滑
         // heightRatio=1.0 弧线高度抬升程度，值越大，抬高得越明显
         // 返回值是类cartesian型的坐标数组 （笛卡尔坐标）
-        const cartesians = Cesium.xbsjCreateTransmitPolyline(e[0], e[1], 100.0, 5.0);
+        const cartesians = Cesium.xbsjCreateTransmitPolyline(e[0], e[1], 10000.0, 5.0);
         const poss = cartesians.map(ee => {
           // 笛卡尔坐标转弧度坐标
           const carto = Cesium.Cartographic.fromCartesian(ee);
