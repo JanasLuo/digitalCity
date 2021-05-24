@@ -16,6 +16,7 @@
   <script src="./SampleData/js/klmy_road.js"></script>
   <script src="./SampleData/js/jiangan.js"></script>
   <script src="./SampleData/js/beijing_fj_polygon.js"></script>
+  <script src="./SampleData/js/heatData.js"></script>
   <!-- <script src="./SampleData/js/beijing.js"></script> -->
   <!-- <script src="./SampleData/js/beijing_pos.js"></script> -->
   <style>
@@ -82,15 +83,15 @@
   </div>
   <div class="operate">
     <span class="city" id="city" onclick="lookAround()">旋转</span>
-    <span class="light" id="light" onclick="showRoad()"></span>
+    <span class="light" id="light" onclick="showRoad()">路网</span>
     <span class="fly" id="fly" onclick="changeBuilding()"></span>
     <span onclick="addPolyline()">边界</span>
     <span onclick="addPolygon()">面</span>
-    <span onclick="addPolygonBeijing()">北京面</span>
+    <!-- <span onclick="addPolygonBeijing()">北京面</span>
     <span onclick="addNeighborhoods()">cesium面</span>
     <span onclick="addEntityPolygon()">entity面</span>
     <span onclick="addEntityPolyline()">entity线</span>
-    <span onclick="addEntityPolygonBeijing()">北京entity面</span>
+    <span onclick="addEntityPolygonBeijing()">北京entity面</span> -->
     <span onclick="createMapvHotData()">热力</span>
     <span class="clear" onclick="clearAll()">X</span>
   </div>
@@ -149,8 +150,8 @@
     var curfsBody = fsBody
     var shCenter = [121.5021463849818, 31.236440277115648, 200] // 上海
     // var whCenter = [113.954422, 30.920587, 200] // 孝感
-    // var whCenter = [114.29797053337097, 30.63787510375684, 200] // 武汉
-    var whCenter = [121.5021463849818, 31.236440277115648, 200] // 上海 
+    var whCenter = [114.29797053337097, 30.63787510375684, 200] // 武汉
+    // var whCenter = [121.5021463849818, 31.236440277115648, 200] // 上海 
     // var whCenter = [116.416357,39.928353, 200] // 北京
     // var whCenter = [114.465406, 38.066124, 200] // 石家庄 114.465406,38.066124
     // var whCenter = [119.452298,39.803812, 200] // 秦皇岛 119.586579,39.942531
@@ -231,15 +232,8 @@
             "czmObject": {
               "xbsjType": "Tileset",
               "xbsjGuid": "094b1984-4aae-4ac3-bb35-86d84e6a8204",
-              "name": "陆家嘴",
-              // "url": "http://39.106.114.130/output/sh-fbx/tileset.json",
-              "url": "/output/sh-fbx/tileset.json",
-              "xbsjPosition": [
-                2.120596806138149,
-                0.5452642837003802,
-                0
-              ],
-              "xbsjUseOriginTransform": false,
+              "name": "白膜",
+              "url": "/output/newjianganwight/tileset.json",
               "xbsjStyle": "var style = {\n    color: \"vec4(0, 0.5, 1.0,1)\"\n}",
               "xbsjClippingPlanes": {},
               "xbsjCustomShader": {
@@ -308,21 +302,23 @@
     }
     // 热力图
     function createMapvHotData() {
-      var data = []
-      var pointData = [{ "id": "1E5D68E996BD16ABE053056128ACFEF0", "longitude": "84.88998", "latitude": "44.33018" }, { "id": "12322B6EEE204B079C6E009E91CEA5CA", "longitude": "84.91305", "latitude": "45.55249" }, { "id": "D7F12F37C40B444F845BFB2A6D4CB51E", "longitude": "84.91232", "latitude": "45.55249" }, { "id": "CB99B52C379143E097E63AADAF02FA55", "longitude": "84.85834", "latitude": "45.61569" }, { "id": "8B01B22A562249009DE4B6544CAECCF2", "longitude": "84.86883", "latitude": "45.57785" }, { "id": "03216BA46E44409F9A5A1281EEAD1F21", "longitude": "84.86177", "latitude": "45.60384" }, { "id": "25621BAC9C439985E053066128ACBF3A", "longitude": "84.90703", "latitude": "44.33077" }, { "id": "fd05fa5500ac4f279080f5a63cb75e90", "longitude": "84.87273", "latitude": "45.58356" }, { "id": "4b8247eff0dd4d0d83192f45976c0cd9", "longitude": "84.98632", "latitude": "45.57882" }, { "id": "1E5D68E9852B16ABE053056128ACFEF0", "longitude": "84.9216", "latitude": "44.3471" }, { "id": "1E5D68E96A4A16ABE053056128ACFEF0", "longitude": "84.89529", "latitude": "44.34184" }, { "id": "2C513B1F3CC64AE28D5BDBB842C6BC66", "longitude": "84.84263", "latitude": "45.60168" }, { "id": "10107DBCF61B426BA1DD17770FED622C", "longitude": "84.8739", "latitude": "44.33796" }, { "id": "122475", "longitude": "84.92593", "latitude": "44.33324" }, { "id": "264d88a1ab324517ac0e5f7bfca0ebe2", "longitude": "84.92505", "latitude": "44.34257" }, { "id": "d64623ad05ce41d9b11e810c7d970121", "longitude": "84.84196", "latitude": "45.58438" }, { "id": "77a570b6593b41c380250387d99f2909", "longitude": "84.88392", "latitude": "45.59111" }, { "id": "1E5D68E9947C16ABE053056128ACFEF0", "longitude": "84.91097", "latitude": "44.33978" }, { "id": "75a9ae89bdf343b497a55d9ebb885938", "longitude": "84.85262", "latitude": "45.61793" }, { "id": "1E5D68E9B95116ABE053056128ACFEF0", "longitude": "84.88949", "latitude": "44.32875" }]
-      pointData.forEach(item => {
-        data.push({
-          // 点数据
-          geometry: {
-            type: 'Point',
-            coordinates: [
-              Number(item.longitude),
-              Number(item.latitude)
-            ]
-          },
-          count: 20
-        })
-      })
+      // var data = []
+      // var pointData = [{ "id": "1E5D68E996BD16ABE053056128ACFEF0", "longitude": "84.88998", "latitude": "44.33018" }, { "id": "12322B6EEE204B079C6E009E91CEA5CA", "longitude": "84.91305", "latitude": "45.55249" }, { "id": "D7F12F37C40B444F845BFB2A6D4CB51E", "longitude": "84.91232", "latitude": "45.55249" }, { "id": "CB99B52C379143E097E63AADAF02FA55", "longitude": "84.85834", "latitude": "45.61569" }, { "id": "8B01B22A562249009DE4B6544CAECCF2", "longitude": "84.86883", "latitude": "45.57785" }, { "id": "03216BA46E44409F9A5A1281EEAD1F21", "longitude": "84.86177", "latitude": "45.60384" }, { "id": "25621BAC9C439985E053066128ACBF3A", "longitude": "84.90703", "latitude": "44.33077" }, { "id": "fd05fa5500ac4f279080f5a63cb75e90", "longitude": "84.87273", "latitude": "45.58356" }, { "id": "4b8247eff0dd4d0d83192f45976c0cd9", "longitude": "84.98632", "latitude": "45.57882" }, { "id": "1E5D68E9852B16ABE053056128ACFEF0", "longitude": "84.9216", "latitude": "44.3471" }, { "id": "1E5D68E96A4A16ABE053056128ACFEF0", "longitude": "84.89529", "latitude": "44.34184" }, { "id": "2C513B1F3CC64AE28D5BDBB842C6BC66", "longitude": "84.84263", "latitude": "45.60168" }, { "id": "10107DBCF61B426BA1DD17770FED622C", "longitude": "84.8739", "latitude": "44.33796" }, { "id": "122475", "longitude": "84.92593", "latitude": "44.33324" }, { "id": "264d88a1ab324517ac0e5f7bfca0ebe2", "longitude": "84.92505", "latitude": "44.34257" }, { "id": "d64623ad05ce41d9b11e810c7d970121", "longitude": "84.84196", "latitude": "45.58438" }, { "id": "77a570b6593b41c380250387d99f2909", "longitude": "84.88392", "latitude": "45.59111" }, { "id": "1E5D68E9947C16ABE053056128ACFEF0", "longitude": "84.91097", "latitude": "44.33978" }, { "id": "75a9ae89bdf343b497a55d9ebb885938", "longitude": "84.85262", "latitude": "45.61793" }, { "id": "1E5D68E9B95116ABE053056128ACFEF0", "longitude": "84.88949", "latitude": "44.32875" }]
+
+      // pointData.forEach(item => {
+      //   data.push({
+      //     // 点数据
+      //     geometry: {
+      //       type: 'Point',
+      //       coordinates: [
+      //         Number(item.longitude),
+      //         Number(item.latitude)
+      //       ]
+      //     },
+      //     count: 20
+      //   })
+      // })
+      var data = heatData
       console.log('data', data)
       var viewer = earth.czm.viewer
       var dataSet = new mapv.DataSet([])
